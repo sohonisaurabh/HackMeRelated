@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Live Virtual Tour</title>
+
+<style type="text/css">
+    .slider-box {
+      border: 2px solid black;
+      height: 20px;
+      margin: 20px auto 0;
+      width: 520px;
+    }
+    .slider-roll {
+      background: red;
+      border-radius: 20px;
+      display: inline-block;
+      height: 20px;
+      margin-left: 250px;
+      width: 20px;
+    }
+</style>
+
+</head>
+
+<body>
+
+<div id='container'>
+  <select id="videoSource">
+  </select>
+   <!--  <select id="testSelect">
+      <option val="1">Test select 1</option>
+      <option val="2">Test select 2</option>
+    </select> -->
+  <div id="calibMsg">Please hold the device still for 5 seconds, calibration under progress..</div>
+  <div class="start-wrapper">
+    <div>Select rear(back) camera on recorder device. Click on Start once done!</div>
+    <button id="start">START</button>
+  </div>
+  <div class="slider-box">
+    <span class="slider-roll"></span>
+  </div>
+  <div id='videos'>
+    <video id='localVideo' autoplay muted style="display:none"></video>
+    <video id='remoteVideo' autoplay style="display:none"></video>
+  </div>
+
+</div>
+<script src='js/lib/jquery.js'></script>
+<script src="js/lib/screenfull.js"></script>
+<script src="js/lib/three.js"></script>
+<script src='/socket.io/socket.io.js'></script>
+<script src='js/lib/adapter.js'></script>
+<script src="js/slider.js"></script>
+<script src='js/sorted-main.js'></script>
+<script src="js/input-select.js"></script>
+<script src="js/3d-video-render.js"></script>
+</body>
+</html>

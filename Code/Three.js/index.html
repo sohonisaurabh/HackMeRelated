@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Stereoscopic video render</title>
+	<meta name="description" content="This example demonstrates conversion of 2D video to stereoscopic (3D) plane for Virtual Reality (VR) experience. The output video can be viewed in a VR headset">
+	<meta name="keywords" content="Three.js, Stereoscopic Video Render, Virtual Reality, Google Cardboard">
+	<style type="text/css">
+		#3dContainer {
+			position: absolute;
+			top: 0; bottom: 0;
+			left: 0; right: 0;
+		}
+		#video {
+			position: absolute;
+			left: -9999em;
+		}
+	</style>
+</head>
+<body>
+	<div id="3dContainer"></div>
+	<video id="video" autoplay loop controls>
+		<source src="video/pixel.mp4" type="video/mp4"></source>
+		Your browser does not support the video element
+	</video>
+	<script src="js/lib/jquery.js"></script>
+	<script src="js/lib/three.js"></script>
+	<script src="js/lib/StereoEffect.js"></script>
+	<script src="js/lib/DeviceOrientationControls.js"></script>
+	<script src="js/lib/OrbitControls.js"></script>
+	<script src="js/lib/screenfull.js"></script>
+	<script src="js/main.js"></script>
+</body>
+</html>
