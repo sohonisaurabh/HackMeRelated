@@ -8,16 +8,16 @@ $(function () {
 		bindPlay = function () {
 			var video = document.getElementById('video');
 			video.play();
-			screenfull.toggle(this);
+			//screenfull.toggle(this);
 		},
 		onWindowResize = function () {
 	        windowHalfX = window.innerWidth / 2;
 	        windowHalfY = window.innerHeight / 2;
-	        cameraLeft.aspect = windowHalfX*2 / window.innerHeight;
+	        cameraLeft.aspect = windowHalfX / window.innerHeight;
 	        cameraLeft.updateProjectionMatrix();
-	        cameraRight.aspect = windowHalfX*2 / window.innerHeight;
+	        cameraRight.aspect = windowHalfX / window.innerHeight;
 	        cameraRight.updateProjectionMatrix();
-	        renderer.setSize(window.innerWidth, window.innerHeight);
+	        effect.setSize(window.innerWidth, window.innerHeight);
     	},
 		update = function (dt) {
 			resize();
@@ -107,7 +107,8 @@ $(function () {
 		    var mouseY = 0;
 		    var windowHalfX = window.innerWidth / 2;
 		    var windowHalfY = window.innerHeight / 2;
-		    var separation = -0.04300000000000005;
+		    //var separation = -0.04300000000000005;
+		    var separation = 3;
 		    init();
 		    animate();
 		    function init() {
@@ -156,7 +157,9 @@ $(function () {
 		        scene.add(mesh);
 		        //
 		        renderer = new THREE.WebGLRenderer();
-		        renderer.setSize(window.innerWidth, window.innerHeight);
+		        effect = new THREE.StereoEffect(renderer);
+		        effect.setEyeSeparation(0.5);
+				effect.setSize( window.innerWidth, window.innerHeight );
 		        container.appendChild(renderer.domElement);
 		        //document.addEventListener('mousemove', onDocumentMouseMove, false);
 		        
@@ -187,18 +190,18 @@ $(function () {
 		        renderer.setViewport( 0, 0, width, height);
 		        renderer.setScissor( 0, 0, width, height);
 		        renderer.setScissorTest ( true );
-		        cameraLeft.aspect = width * 2 / height;
+		        cameraLeft.aspect = width*2/ height;
 		        cameraLeft.updateProjectionMatrix();
 		        cameraLeft.position.set( separation, 0, 1000 );
-		        renderer.render(scene, cameraLeft);
+		        effect.render(scene, cameraLeft);
 
 		        renderer.setViewport( width, 0, width, height);
 		        renderer.setScissor( width, 0, width, height);
 		        renderer.setScissorTest ( true );
-		        cameraRight.aspect = width * 2 / height;
+		        cameraRight.aspect = width/ height;
 		        cameraRight.updateProjectionMatrix();
 		        cameraRight.position.set(-separation, 0, 1000 );
-		        renderer.render(scene, cameraRight);
+		        //renderer.render(scene, cameraRight);
 
 		        if (video.readyState === video.HAVE_ENOUGH_DATA) {
 		       //     imageContext.drawImage(video, 0, 0);

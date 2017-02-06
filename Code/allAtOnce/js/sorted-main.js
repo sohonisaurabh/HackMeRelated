@@ -53,10 +53,12 @@
 					pc.addIceCandidate(candidate);
 				} else if (message === 'bye' && isStarted) {
 					handleRemoteHangup();
+				} else if (message === "enableOrient") {
+					hackMeVR.initOrientationModule();
 				}
 			});
-		},
-		sendMessage = function (message) {
+		};
+		hackMeVR.sendMessage = function (message) {
 			console.log('Client sending message: ', message);
 			socket.emit('message', message);
 		};
@@ -73,7 +75,7 @@
 			console.log('Adding local stream.');
 			localVideo.src = window.URL.createObjectURL(stream);
 			localStream = stream;
-			sendMessage('got user media');
+			hackMeVR.sendMessage('got user media');
 			if (isInitiator) {
 				maybeStart();
 			}
@@ -108,7 +110,7 @@
 		handleIceCandidate = function (event) {
 			console.log('handleIceCandidate event: ', event);
 			if (event.candidate) {
-				sendMessage({
+				hackMeVR.sendMessage({
 					type: 'candidate',
 					label: event.candidate.sdpMLineIndex,
 					id: event.candidate.sdpMid,
@@ -148,7 +150,7 @@
 			sessionDescription.sdp = preferOpus(sessionDescription.sdp);
 			pc.setLocalDescription(sessionDescription);
 			console.log('setLocalAndSendMessage sending message' , sessionDescription);
-			sendMessage(sessionDescription);
+			hackMeVR.sendMessage(sessionDescription);
 		},
 		handleCreateOfferError = function (event) {
 			console.log('createOffer() error: ', e);
@@ -160,7 +162,7 @@
 		handleRemoteHangup = function () {
 			console.log('Hanging up.');
 			stop();
-			sendMessage('bye');
+			hackMeVR.sendMessage('bye');
 		},
 		stop = function () {
 			isStarted = false;
@@ -280,8 +282,11 @@
 	/*========Declaration for codec related and SDP related methods ends==============*/
 
 	hackMeVR.startMediaDevices = function () {
-		var constraints = hackMeVR.getMediaConstraints();
-		getUserMedia(constraints, handleUserMedia, handleUserMediaError);
+		if (hackMeVR.currentDevice !== "master") {
+			$(".start-wrapper").remove();
+			var constraints = hackMeVR.getMediaConstraints();
+			getUserMedia(constraints, handleUserMedia, handleUserMediaError);
+		}
 	};
 
 	var init = (function () {
@@ -291,11 +296,16 @@
 			socket.emit('create or join', room);
 		}
 		//hackMeVR.startMediaDevices();
-		if (location.hostname != "localhost") {
+		/*if (location.hostname != "localhost") {
 			requestTurn('https://computeengineondemand.appspot.com/turn?username=41784574&key=4080218913');
+		}*/
+		if (location.hostname === "localhost") {
+			hackMeVR.currentDevice = "master";
+		} else {
+			$("#board, #motorTest").remove();
 		}
 		window.onbeforeunload = function(e){
-			sendMessage('bye');
+			hackMeVR.sendMessage('bye');
 		}
 	})();
 })(window.hackMeVR = window.hackMeVR || {});

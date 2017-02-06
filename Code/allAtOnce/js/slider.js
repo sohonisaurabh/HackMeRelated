@@ -15,7 +15,7 @@ $(function () {
 			$(window).off("deviceorientation");
 			setTimeout(function () {
 				return adjustRollerPosition(event);
-			}, 100);
+			}, 1000);
 		},
 		adjustRollerPosition = function (event) {
 			var event = event.originalEvent,
@@ -24,7 +24,7 @@ $(function () {
 				normalizedAlpha;
 			if (offsetCounter > 49) {
 				calibBox.remove();
-				$("#videoSource, .start-wrapper").remove();
+				//$("#videoSource, .start-wrapper").remove();
 				alpha = (alpha*pi)/180;
 				if (alpha > range[1]) {
 					alpha = range[1];

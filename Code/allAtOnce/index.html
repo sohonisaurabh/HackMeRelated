@@ -2,6 +2,7 @@
 <html>
 <head>
 <title>Live Virtual Tour</title>
+<link rel="manifest" href="json/manifest.json">
 
 <style type="text/css">
     .slider-box {
@@ -31,14 +32,20 @@
       <option val="1">Test select 1</option>
       <option val="2">Test select 2</option>
     </select> -->
-  <div id="calibMsg">Please hold the device still for 5 seconds, calibration under progress..</div>
+  <!-- <div id="calibMsg">Please hold the device still for 5 seconds, calibration under progress..</div> -->
   <div class="start-wrapper">
-    <div>Select rear(back) camera on recorder device. Click on Start once done!</div>
-    <button id="start">START</button>
+    <!-- <div>Select rear(back) camera on recorder device. Click on Start once done!</div> -->
+    <button id="start">START STREAM</button>
+    <button id="board">SETUP BOARD</button>
+    <button id="motorTest">TEST RUN MOTOR</button>
+    <button id="enableOrient">ENABLE ORIENTATION EVENT</button>
+    <button id="disableOrientPermanent">DISABLE ORIENTATION PERMANENTLY</button>
+    <!-- <input type="number" id="motorQuarter"/>
+    <button id="motorRun">RUN MOTOR</button> -->
   </div>
-  <div class="slider-box">
+  <!-- <div class="slider-box">
     <span class="slider-roll"></span>
-  </div>
+  </div> -->
   <div id='videos'>
     <video id='localVideo' autoplay muted style="display:none"></video>
     <video id='remoteVideo' autoplay style="display:none"></video>
@@ -50,9 +57,10 @@
 <script src="js/lib/three.js"></script>
 <script src='/socket.io/socket.io.js'></script>
 <script src='js/lib/adapter.js'></script>
-<script src="js/slider.js"></script>
+<!--<script src="js/slider.js"></script>-->
 <script src='js/sorted-main.js'></script>
 <script src="js/input-select.js"></script>
+<script src="js/device-orientation.js"></script>
 <script src="js/3d-video-render.js"></script>
 </body>
 </html>

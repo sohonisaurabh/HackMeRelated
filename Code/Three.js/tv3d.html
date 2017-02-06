@@ -3,8 +3,8 @@
 <head>
 <title>Welcome to WebGL</title>
 
-	<link rel="stylesheet" href="../css/webglbook.css" /> 
-	<script src="../libs/Three.js"></script>
+	<link rel="stylesheet" href="css/webglbook.css" /> 
+	<script src="js/lib/three.js"></script>
 	<script src="../libs/RequestAnimationFrame.js"></script>
 	<script>
 	
@@ -45,7 +45,7 @@
 
         // Create a shaded, texture-mapped cube and add it to the scene
         // First, create the texture map
-        var mapUrl = "../images/molumen_small_funny_angry_monster.jpg";
+        var mapUrl = "images/molumen_small_funny_angry_monster.jpg";
         var map = THREE.ImageUtils.loadTexture(mapUrl);
         
         // Now, create a Phong material to show shading; pass in the map
@@ -77,7 +77,7 @@
 		// Render the scene
 		renderer.setViewport( 0, 0, width, height);
 		renderer.setScissor( 0, 0, width, height);
-		renderer.enableScissorTest ( true );
+		renderer.setScissorTest ( true );
 
 		cameraLeft.aspect = width * 2 / height;
 		cameraLeft.updateProjectionMatrix();
@@ -87,11 +87,11 @@
 
 		renderer.setViewport( width, 0, width, height);
 		renderer.setScissor( width, 0, width, height);
-		renderer.enableScissorTest ( true );
+		renderer.setScissorTest ( true );
 
 		cameraRight.aspect = width * 2 / height;
 		cameraRight.updateProjectionMatrix();
-		cameraRight.position.set( -separation, 0, 3 );
+		cameraRight.position.set( -separation*25, 0, 3 );
 		
 		renderer.render( scene, cameraRight );
 		// Spin the cube for next frame

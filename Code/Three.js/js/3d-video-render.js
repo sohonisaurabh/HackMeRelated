@@ -100,7 +100,7 @@ $(function () {
         renderer.setViewport( 0, 0, width, height);
         renderer.setScissor( 0, 0, width, height);
         renderer.enableScissorTest ( true );
-        cameraLeft.aspect = width * 2 / height;
+        cameraLeft.aspect = width / height;
         cameraLeft.updateProjectionMatrix();
         cameraLeft.position.set( separation, 0, 1000 );
         renderer.render(scene, cameraLeft);
@@ -108,7 +108,7 @@ $(function () {
         renderer.setViewport( width, 0, width, height);
         renderer.setScissor( width, 0, width, height);
         renderer.enableScissorTest ( true );
-        cameraRight.aspect = width * 2 / height;
+        cameraRight.aspect = width / height;
         cameraRight.updateProjectionMatrix();
         cameraRight.position.set(-separation, 0, 1000 );
         renderer.render(scene, cameraRight);

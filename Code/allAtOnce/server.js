@@ -2,6 +2,12 @@ var https = require('https');
 var pem = require('pem');
 var fs = require("fs");
 var path = require("path");
+var five = require("johnny-five");
+
+var stepper,
+	board,
+	currentQuarter = 2,
+	previousDirection = 0;
 
 function getFile(localPath, res, mimeType) {
 	fs.readFile(localPath, function(err, contents) {
@@ -16,6 +22,50 @@ function getFile(localPath, res, mimeType) {
 			res.writeHead(500);
 			res.end();
 		}
+	});
+}
+function testRunMotor() {
+	stepper.rpm(180).ccw().accel(800).decel(800).step(400, function() {
+		console.log("Done moving CCW");
+		stepper.rpm(180).cw().accel(800).decel(800).step(400, function() {
+			console.log("Done moving CW");
+		});
+	});
+}
+
+function runMotor(config) {
+	var step=400;
+		//direction = currentQuarter - config.nextQuarter;
+	if (!((previousDirection > 0 && config.direction > 0) ||
+		(previousDirection < 0 && config.direction < 0) ||
+		(previousDirection === 0 && config.direction === 0))) {
+		if (config.direction > 0) {
+			previousDirection = config.direction;
+			stepper.rpm(180).cw().accel(800).decel(800).step(step, function () {
+				console.log("Moved CW!");
+			});
+		} else if (config.direction < 0) {
+			previousDirection = config.direction;
+			stepper.rpm(180).ccw().accel(800).decel(800).step(step, function () {
+				console.log("Moved CCW!");
+			});
+		}
+	}
+}
+
+function setupBoard() {
+	board = new five.Board();
+	board.on("ready", function() {
+		stepper = new five.Stepper({
+			type: five.Stepper.TYPE.FOUR_WIRE,
+			stepsPerRev: 200,
+			pins: {
+				motor1: 8,
+				motor2: 9,
+				motor3: 10,
+				motor4: 11
+			}
+		});
 	});
 }
 
@@ -38,6 +88,7 @@ pem.createCertificate({ days: 1, selfSigned: true }, function (err, keys) {
 		var localPath = __dirname;
 		var validExtensions = {
 			".html" : "text/html",
+			".json" : "application/json",
 			".mp4" : "video/mp4",
 			".js": "application/javascript",
 			".css": "text/css",
@@ -89,6 +140,15 @@ pem.createCertificate({ days: 1, selfSigned: true }, function (err, keys) {
 
 		socket.on('message', function (message) {
 			log('Got message:', message);
+			if (typeof message === "object") {
+				if (message.text === "runMotor") {
+					runMotor(message);
+				}
+			} else if (message === "testRunMotor") {
+				testRunMotor();
+			} else if (message === "setupBoard") {
+				setupBoard();
+			}
 	    // for a real app, would be room only (not broadcast)
 			socket.broadcast.emit('message', message);
 		});
@@ -102,11 +162,11 @@ pem.createCertificate({ days: 1, selfSigned: true }, function (err, keys) {
 			if (numClients === 0){
 				socket.join(room);
 				socket.emit('created', room);
-			} else if (numClients === 1) {
+			} else if (numClients <= 2) {
 				io.sockets.in(room).emit('join', room);
 				socket.join(room);
 				socket.emit('joined', room);
-			} else { // max two clients
+			} else { // max three clients
 				socket.emit('full', room);
 			}
 			socket.emit('emit(): client ' + socket.id + ' joined room ' + room);
