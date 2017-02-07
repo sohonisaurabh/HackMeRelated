@@ -1,0 +1,22 @@
+{
+  "name": "liveVirtualTourApp",
+  "version": "1.0.0",
+  "description": "Web application to take a virtual tour of a scene wearing VR headset",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Video Chat",
+    "WebRTC"
+  ],
+  "dependencies": {
+    "socket.io": "~0.9.16"
+  },
+  "devDependencies": {
+    "http-proxy": "^1.15.2",
+    "openssl": "^1.1.0",
+    "pem": "^1.9.4",
+    "socket.io": "^0.9.17"
+  }
+}
